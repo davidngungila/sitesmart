@@ -52,6 +52,38 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
+    // Sidebar menu scroll indicators
+    const sidebarMenu = document.querySelector('.sidebar-menu');
+    if (sidebarMenu) {
+        sidebarMenu.addEventListener('scroll', function() {
+            const scrollTop = this.scrollTop;
+            const scrollHeight = this.scrollHeight;
+            const clientHeight = this.clientHeight;
+            
+            // Top scroll indicator
+            if (scrollTop > 10) {
+                this.classList.add('scrolled');
+            } else {
+                this.classList.remove('scrolled');
+            }
+            
+            // Bottom scroll indicator
+            if (scrollTop + clientHeight < scrollHeight - 10) {
+                this.classList.add('scrolled-bottom');
+            } else {
+                this.classList.remove('scrolled-bottom');
+            }
+        });
+        
+        // Check initial state
+        if (sidebarMenu.scrollTop > 10) {
+            sidebarMenu.classList.add('scrolled');
+        }
+        if (sidebarMenu.scrollTop + sidebarMenu.clientHeight < sidebarMenu.scrollHeight - 10) {
+            sidebarMenu.classList.add('scrolled-bottom');
+        }
+    }
+    
     // Close sidebar on mobile when clicking outside
     document.addEventListener('click', function(e) {
         if (window.innerWidth <= 1024) {

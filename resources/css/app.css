@@ -48,14 +48,16 @@ body {
 /* Sidebar Styles */
 .sidebar {
     background-color: var(--sidebar-bg);
-    min-height: 100vh;
+    height: 100vh;
     width: 280px;
     position: fixed;
     left: 0;
     top: 0;
     transition: all 0.3s ease;
     z-index: 1000;
-    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 .sidebar.collapsed {
@@ -68,6 +70,11 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-shrink: 0;
+    background-color: var(--sidebar-bg);
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
 .sidebar-logo {
@@ -85,7 +92,16 @@ body {
 }
 
 .sidebar-menu {
-    padding: 1rem 0;
+    padding: 1rem 0.5rem 1rem 0;
+    margin-right: 0.5rem;
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    position: relative;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.2) rgba(255, 255, 255, 0.05);
 }
 
 .sidebar-menu-item {
@@ -562,20 +578,69 @@ body {
     display: block;
 }
 
-/* Scrollbar Styling */
-.sidebar::-webkit-scrollbar {
-    width: 6px;
+/* Scrollbar Styling for Sidebar Menu */
+.sidebar-menu::-webkit-scrollbar {
+    width: 8px;
 }
 
-.sidebar::-webkit-scrollbar-track {
+.sidebar-menu::-webkit-scrollbar-track {
     background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
 }
 
-.sidebar::-webkit-scrollbar-thumb {
+.sidebar-menu::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.2);
-    border-radius: 3px;
+    border-radius: 4px;
+    transition: background 0.2s ease;
 }
 
-.sidebar::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.3);
+.sidebar-menu::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.35);
+}
+
+/* Hide scrollbar when collapsed */
+.sidebar.collapsed .sidebar-menu::-webkit-scrollbar {
+    width: 0;
+}
+
+.sidebar.collapsed .sidebar-menu {
+    scrollbar-width: none;
+}
+
+/* Scroll indicator shadow effect */
+
+.sidebar-menu::before {
+    content: '';
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 20px;
+    background: linear-gradient(to bottom, var(--sidebar-bg), transparent);
+    pointer-events: none;
+    z-index: 5;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar-menu.scrolled::before {
+    opacity: 1;
+}
+
+.sidebar-menu::after {
+    content: '';
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 20px;
+    background: linear-gradient(to top, var(--sidebar-bg), transparent);
+    pointer-events: none;
+    z-index: 5;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar-menu.scrolled-bottom::after {
+    opacity: 1;
 }
